@@ -1,0 +1,34 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Hasil_model extends CI_Model {
+
+    public function getData(){
+        $query = "SELECT * FROM hasil as h
+                JOIN kandidat as k ON k.id_kandidat = h.id_kandidat
+                JOIN pemilih as p ON p.id_pemilih = h.id_pemilih";
+        return $this->db->query($query)->result_array();
+    }
+
+    public function getId($id){
+        $query = "SELECT * FROM hasil as h
+                JOIN kandidat as k ON k.id_kandidat = h.id_kandidat
+                JOIN pemilih as p ON p.id_pemilih = h.id_pemilih
+                WHERE `id_hasil` = $id";
+        return $this->db->query($query)->row_array();
+    }
+
+    public function edit($id){
+        $data = [
+            'id_kandidat' => $this->input->post('id_kandidat'),
+        ];
+        $this->db->where('id_hasil', $id);
+        $this->db->update('hasil', $data);
+    }
+
+    public function hapus($id){
+        $this->db->where('id_hasil', $id);
+        $this->db->delete('hasil');
+    }
+
+}
